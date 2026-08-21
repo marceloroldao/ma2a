@@ -6,6 +6,7 @@ import json
 
 _ALLOWED_OPERATIONS = {"SET", "PATCH", "DELETE", "LINK", "TOMBSTONE"}
 _ALLOWED_SCOPES = {"private", "user", "shared", "global"}
+MAX_REFERENCE_DELTA_BYTES = 64 * 1024
 
 
 @dataclass(frozen=True)
@@ -46,16 +47,28 @@ def encode_reference_delta(delta: ReferenceDelta) -> bytes:
     process interoperability before a compact v0.1 wire encoding is frozen.
     """
     delta.validate()
-    return json.dumps(
+    encoded = json.dumps(
         asdict(delta),
         sort_keys=True,
         separators=(",", ":"),
         ensure_ascii=False,
     ).encode("utf-8")
+    if len(encoded) > MAX_REFERENCE_DELTA_BYTES:
+        raise ValueError("reference delta too large")
+    return encoded
 
 
 def decode_reference_delta(data: bytes) -> ReferenceDelta:
-    raw = json.loads(data.decode("utf-8"))
+    if not isinstance(data, (bytes, bytearray)):
+        raise ValueError("reference delta must be bytes")
+    if len(data) > MAX_REFERENCE_DELTA_BYTES:
+        raise ValueError("reference delta too large")
+    try:
+        raw = json.loads(bytes(data).decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError, TypeError) as exc:
+        raise ValueError("malformed reference delta") from exc
+    if not isinstance(raw, dict):
+        raise ValueError("reference delta must be an object")
     required = {
         "protocol_version",
         "message_id",
@@ -73,6 +86,9 @@ def decode_reference_delta(data: bytes) -> ReferenceDelta:
     }
     if set(raw) != required:
         raise ValueError("unexpected or missing fields")
-    delta = ReferenceDelta(**raw)
-    delta.validate()
+    try:
+        delta = ReferenceDelta(**raw)
+        delta.validate()
+    except (TypeError, AttributeError) as exc:
+        raise ValueError("invalid reference delta fields") from exc
     return delta
