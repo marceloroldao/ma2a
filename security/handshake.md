@@ -66,10 +66,11 @@ The server must verify:
 3. certificate chain terminates in an accepted MA2A Official trust anchor;
 4. certificate validity interval and constraints;
 5. organization/network status is `ACTIVE`;
-6. delegated credential has required capability;
-7. transcript signature is valid;
-8. client/server nonces match the current session;
-9. protocol/capability negotiation is acceptable.
+6. delegated device/agent status is `ACTIVE`;
+7. delegated credential has required capability;
+8. transcript signature is valid;
+9. client/server nonces match the current session;
+10. protocol/capability negotiation is acceptable.
 
 If all checks pass, the server returns `AUTH_OK` and binds the authenticated identity and authorization scope to the session. Otherwise it returns `AUTH_DENIED` without revealing unnecessary validation detail to an attacker.
 
@@ -79,8 +80,10 @@ Challenges are single-use and short-lived. Servers must maintain sufficient repl
 
 ## Revocation
 
-A previously valid session may be terminated or denied renewal if the organization or delegated credential becomes suspended/revoked according to the active network policy.
+Organization and delegated device/agent status are evaluated independently. A valid organization does not keep a revoked subordinate credential active, and a valid subordinate credential does not override a suspended or revoked organization.
+
+A previously valid session may be terminated or denied renewal if either level becomes suspended/revoked according to the active network policy.
 
 ## Security note
 
-This draft defines protocol intent. It is not yet a security-reviewed production authentication protocol. v0.1 must include negative tests for replay, altered transcript, wrong key, expired certificate, revoked organization, unauthorized capability and malformed chain.
+This draft defines protocol intent and has an executable reference implementation, but it is not yet a production security review. v0.1 test coverage includes replay, altered transcript, wrong key, expired certificate, revoked organization, revoked device, unauthorized capability, malformed delegation and wrong trust root. Additional fuzzing, interoperability and operational key-management review remain required before production deployment.
