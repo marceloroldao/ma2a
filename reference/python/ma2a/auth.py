@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 import base64
+import binascii
 import json
 import secrets
 from typing import Iterable
@@ -19,7 +20,7 @@ def _b64(data: bytes) -> str:
 
 
 def _unb64(text: str) -> bytes:
-    return base64.urlsafe_b64decode(text.encode("ascii"))
+    return base64.b64decode(text.encode("ascii"), altchars=b"-_", validate=True)
 
 
 def canonical_json(value: dict) -> bytes:
@@ -95,14 +96,19 @@ def verify_certificate(
     now: int | None = None,
 ) -> bool:
     now = int(datetime.now(timezone.utc).timestamp()) if now is None else int(now)
+    if cert.version != 1:
+        return False
     if cert.signature_algorithm != "Ed25519":
         return False
     if not cert.not_before <= now <= cert.not_after:
         return False
     try:
-        issuer_public_key.verify(_unb64(cert.issuer_signature), canonical_json(cert.unsigned_payload()))
+        issuer_public_key.verify(
+            _unb64(cert.issuer_signature),
+            canonical_json(cert.unsigned_payload()),
+        )
         return True
-    except (InvalidSignature, ValueError):
+    except (InvalidSignature, ValueError, UnicodeError, binascii.Error):
         return False
 
 
@@ -142,6 +148,8 @@ def make_challenge(
     now: int,
     ttl_seconds: int = 30,
 ) -> Challenge:
+    if ttl_seconds <= 0:
+        raise ValueError("ttl_seconds must be positive")
     return Challenge(
         challenge_id=secrets.token_hex(16),
         client_nonce=client_nonce,
@@ -195,9 +203,13 @@ class HandshakeVerifier:
         if not verify_certificate(organization_certificate, root_public_key, now=now):
             return False, "invalid_organization_certificate"
 
-        organization_public_key = Ed25519PublicKey.from_public_bytes(
-            _unb64(organization_certificate.subject_public_key)
-        )
+        try:
+            organization_public_key = Ed25519PublicKey.from_public_bytes(
+                _unb64(organization_certificate.subject_public_key)
+            )
+        except (ValueError, UnicodeError, binascii.Error):
+            return False, "invalid_organization_certificate"
+
         if device_certificate.issuer_id != organization_certificate.subject_id:
             return False, "invalid_delegation"
         if not verify_certificate(device_certificate, organization_public_key, now=now):
@@ -205,12 +217,12 @@ class HandshakeVerifier:
         if required_capability and required_capability not in device_certificate.capabilities:
             return False, "unauthorized_capability"
 
-        device_public_key = Ed25519PublicKey.from_public_bytes(
-            _unb64(device_certificate.subject_public_key)
-        )
         try:
+            device_public_key = Ed25519PublicKey.from_public_bytes(
+                _unb64(device_certificate.subject_public_key)
+            )
             device_public_key.verify(_unb64(signature), challenge.transcript())
-        except (InvalidSignature, ValueError):
+        except (InvalidSignature, ValueError, UnicodeError, binascii.Error):
             return False, "invalid_signature"
 
         self._consumed.add(challenge.challenge_id)
