@@ -1,6 +1,16 @@
 # MA2A — Memoria.ia Agent-to-Agent Protocol
 
+[![DOI](https://zenodo.org/badge/1341955634.svg)](https://doi.org/10.5281/zenodo.22048589)
+
 MA2A is an experimental protocol for deterministic synchronization of resolutive memory state between agents, devices, organizational memories, and coordination services.
+
+## Archival release
+
+- **Release:** `v0.1.0-rc1`
+- **Zenodo DOI:** `10.5281/zenodo.22048589`
+- **Status:** experimental release candidate
+
+The DOI identifies the archived release snapshot. Later commits on `main` are not retroactively part of that archived snapshot.
 
 ## Core design
 
@@ -80,4 +90,4 @@ An organization is the principal licensed/trusted network identity. Devices and 
 
 ## Version
 
-Development baseline: `v0.1-dev`.
+Current public archival baseline: `v0.1.0-rc1`.
