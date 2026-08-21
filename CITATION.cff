@@ -4,6 +4,7 @@ title: "MA2A: Memoria.ia Agent-to-Agent Protocol"
 type: software
 version: "0.1.0-rc1"
 date-released: 2026-08-21
+doi: "10.5281/zenodo.22048589"
 authors:
   - family-names: "Matos"
     given-names: "Marcelo Roldão"
