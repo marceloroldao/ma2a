@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use MA2A in academic or scientific work, please cite the software/specification release when archived."
+title: "MA2A: Memoria.ia Agent-to-Agent Protocol"
+type: software
+authors:
+  - family-names: "Matos"
+    given-names: "Marcelo Roldão"
+repository-code: "https://github.com/marceloroldao/ma2a"
+version: "0.1.0-dev"
+date-released: "2026-08-21"
+keywords:
+  - agent-to-agent
+  - resolutive memory
+  - deterministic synchronization
+  - edge AI
+  - PKI
+  - multi-agent systems
