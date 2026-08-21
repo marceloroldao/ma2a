@@ -1,0 +1,67 @@
+MA2A RESEARCH, EDUCATIONAL AND COMMERCIAL LICENSE
+Version 1.0 — 21 August 2026
+
+Copyright (c) 2026 Marcelo Roldão Matos. All rights reserved except as expressly granted below.
+
+1. DEFINITIONS
+"Licensed Materials" means the MA2A source code, reference implementations, protocol documentation, examples, tests, benchmark code, and other copyrighted materials distributed with this license.
+"Non-Commercial Research Use" means use whose primary purpose is academic research, education, teaching, evaluation, reproducibility, or experimentation and which is not performed for commercial advantage or monetary compensation.
+"Commercial Use" means use of the Licensed Materials, in whole or in part, for commercial advantage, monetary compensation, revenue-generating products or services, paid consulting or integration, internal production/business operations, or development of a commercial product or service.
+"MA2A Official Network" means an infrastructure explicitly designated by the project owner as part of the official MA2A trust domain, including official trust anchors, organizational credentials, certification, directories, relays, or related managed services.
+
+2. NON-COMMERCIAL RESEARCH AND EDUCATIONAL LICENSE
+Subject to the conditions below, the copyright holder grants universities, schools, students, educators, academic researchers, nonprofit research institutions, and individual researchers a worldwide, royalty-free, non-exclusive, revocable license to use, copy, modify, execute, benchmark, reproduce, and redistribute the Licensed Materials and modified versions solely for Non-Commercial Research Use.
+
+3. CONDITIONS
+Any redistribution permitted under Section 2 must:
+(a) retain this LICENSE file and all copyright and attribution notices;
+(b) clearly identify modified versions and significant modifications;
+(c) not imply endorsement, official compatibility, certification, or membership in the MA2A Official Network;
+(d) preserve citation information supplied with an applicable release; and
+(e) not remove notices concerning commercial licensing.
+
+4. COMMERCIAL USE REQUIRES A SEPARATE LICENSE
+No Commercial Use rights in the Licensed Materials are granted by this license. Commercial Use requires prior written authorization under a separate commercial agreement from the copyright holder.
+Commercial terms may include product-based royalties, fixed fees, support, certification, managed infrastructure, OEM rights, or other negotiated terms.
+
+5. PROTOCOL IDEAS AND INDEPENDENT IMPLEMENTATIONS
+This license governs the copyrighted Licensed Materials. It does not state that copyright law grants exclusive ownership over abstract ideas, algorithms, facts, mathematical principles, interoperability concepts, or functionality described by the specification where such subject matter is not protected by copyright.
+Any separate rights that may apply, including trademark, contract, patent, trade-secret, certification, network-access, or other rights, are governed independently.
+
+6. OFFICIAL NETWORK ACCESS
+Possession or use of public MA2A code or documentation does not grant access to, membership in, or certification by the MA2A Official Network.
+Official-network access may require a separate commercial or organizational agreement, valid cryptographic credentials, compliance with active security policies, and an ACTIVE admission status.
+
+7. PUBLICATION AND BENCHMARKING
+Academic publication of results obtained using the Licensed Materials is permitted under Section 2. Researchers are encouraged to report configuration, seeds, datasets or generators, benchmark protocol, software version/commit, and limitations sufficient for reproducibility.
+Published benchmark results must not be represented as official MA2A results unless reproduced from the corresponding official release protocol.
+
+8. TRADEMARKS AND PROJECT NAME
+This license does not grant trademark rights. The names "MA2A", "Memoria.ia", "Resolutive", project logos, and associated branding may be used only for accurate attribution or reference, not to imply sponsorship, certification, network membership, or endorsement.
+
+9. PATENTS
+No patent license is granted except to the extent that a patent license is strictly necessary for the Non-Commercial Research Use expressly permitted by Section 2 and the copyright holder has authority to grant it. Commercial patent rights, if applicable, require a separate written agreement.
+
+10. CONTRIBUTIONS
+Unless a separate written contributor agreement states otherwise, contributions accepted into the official repository are provided under terms that permit the project maintainer to distribute them under this license and under separate commercial licenses. Contributors retain copyright in their contributions.
+
+11. NO WARRANTY
+THE LICENSED MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ACCURACY, SECURITY, AVAILABILITY, OR FITNESS FOR ANY PARTICULAR SYSTEM.
+
+12. LIMITATION OF LIABILITY
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER AND CONTRIBUTORS SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, LOSS, INJURY, BUSINESS INTERRUPTION, DATA LOSS, SECURITY INCIDENT, EQUIPMENT DAMAGE, OR OTHER LIABILITY ARISING FROM OR RELATED TO THE LICENSED MATERIALS OR THEIR USE.
+
+13. SAFETY-CRITICAL USE
+This research license does not authorize deployment of the Licensed Materials as the sole or primary mechanism in safety-critical systems where malfunction could reasonably cause death, personal injury, substantial property damage, or environmental harm. Such deployment requires independent engineering validation and a separate written agreement where applicable.
+
+14. TERMINATION
+Rights granted under this license terminate automatically upon material breach. Upon termination, the recipient must cease exercising the rights granted by this license. Sections intended by their nature to survive termination remain effective.
+
+15. NO OPEN-SOURCE REPRESENTATION
+This is a source-available research license with restrictions on commercial use. It is not represented as an Open Source Initiative (OSI) approved open-source license.
+
+16. GOVERNING RIGHTS
+Nothing in this license limits rights that cannot lawfully be restricted under applicable law, including applicable statutory exceptions. Any rights not expressly granted are reserved by the copyright holder.
+
+17. COMMERCIAL LICENSING
+Commercial licensing, MA2A Official Network participation, OEM distribution, certification, and managed infrastructure are governed by separate written agreements through the official project contact channel.
