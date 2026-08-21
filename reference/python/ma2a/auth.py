@@ -59,6 +59,7 @@ def issue_certificate(
     capabilities: Iterable[str],
 ) -> Certificate:
     public_raw = subject_public_key.public_bytes_raw()
+    capability_list = sorted(set(capabilities))
     unsigned = {
         "version": 1,
         "serial": secrets.token_hex(16),
@@ -68,13 +69,21 @@ def issue_certificate(
         "issuer_id": issuer_id,
         "not_before": int(not_before),
         "not_after": int(not_after),
-        "capabilities": sorted(set(capabilities)),
+        "capabilities": capability_list,
         "signature_algorithm": "Ed25519",
     }
     signature = issuer_private_key.sign(canonical_json(unsigned))
     return Certificate(
-        **unsigned,
-        capabilities=tuple(unsigned["capabilities"]),
+        version=unsigned["version"],
+        serial=unsigned["serial"],
+        subject_id=unsigned["subject_id"],
+        subject_kind=unsigned["subject_kind"],
+        subject_public_key=unsigned["subject_public_key"],
+        issuer_id=unsigned["issuer_id"],
+        not_before=unsigned["not_before"],
+        not_after=unsigned["not_after"],
+        capabilities=tuple(capability_list),
+        signature_algorithm=unsigned["signature_algorithm"],
         issuer_signature=_b64(signature),
     )
 
