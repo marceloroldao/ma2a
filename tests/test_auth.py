@@ -47,7 +47,18 @@ def make_valid(now=1_800_000_000):
     return root, org, device, org_cert, device_cert, challenge, signature
 
 
-def verify_case(root, org_cert, device_cert, challenge, signature, *, now, organization_status="ACTIVE", required_capability="sync:shared"):
+def verify_case(
+    root,
+    org_cert,
+    device_cert,
+    challenge,
+    signature,
+    *,
+    now,
+    organization_status="ACTIVE",
+    device_status="ACTIVE",
+    required_capability="sync:shared",
+):
     return HandshakeVerifier().verify(
         challenge=challenge,
         signature=signature,
@@ -57,6 +68,7 @@ def verify_case(root, org_cert, device_cert, challenge, signature, *, now, organ
         organization_status=organization_status,
         required_capability=required_capability,
         now=now,
+        device_status=device_status,
     )
 
 
@@ -110,6 +122,12 @@ def test_revoked_organization_is_rejected():
     now = 1_800_000_000
     root, _, _, org_cert, device_cert, challenge, signature = make_valid(now)
     assert verify_case(root, org_cert, device_cert, challenge, signature, now=now, organization_status="REVOKED") == (False, "inactive_organization")
+
+
+def test_revoked_device_is_rejected():
+    now = 1_800_000_000
+    root, _, _, org_cert, device_cert, challenge, signature = make_valid(now)
+    assert verify_case(root, org_cert, device_cert, challenge, signature, now=now, device_status="REVOKED") == (False, "inactive_device")
 
 
 def test_missing_capability_is_rejected():
