@@ -174,6 +174,7 @@ class HandshakeVerifier:
         organization_status: str,
         required_capability: str | None,
         now: int,
+        device_status: str = "ACTIVE",
     ) -> tuple[bool, str]:
         if challenge.challenge_id in self._consumed:
             return False, "replay"
@@ -181,6 +182,8 @@ class HandshakeVerifier:
             return False, "expired_challenge"
         if organization_status != "ACTIVE":
             return False, "inactive_organization"
+        if device_status != "ACTIVE":
+            return False, "inactive_device"
         if organization_certificate.subject_kind != "organization":
             return False, "invalid_organization_certificate"
         if device_certificate.subject_kind not in {"device", "agent"}:
