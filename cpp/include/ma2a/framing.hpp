@@ -9,9 +9,12 @@
 
 namespace ma2a {
 
-inline constexpr std::size_t kMaxFrameBytes = 4 * 1024 * 1024;
+inline constexpr std::size_t kMaxFrameBytes = 1024 * 1024;
 
 inline std::vector<std::uint8_t> encode_frame(const std::string& payload) {
+    if (payload.empty()) {
+        throw std::invalid_argument("empty frame");
+    }
     if (payload.size() > kMaxFrameBytes) {
         throw std::length_error("frame too large");
     }
@@ -32,6 +35,9 @@ inline std::uint32_t decode_frame_size(const std::array<std::uint8_t, 4>& header
         (static_cast<std::uint32_t>(header[1]) << 16) |
         (static_cast<std::uint32_t>(header[2]) << 8) |
         static_cast<std::uint32_t>(header[3]);
+    if (n == 0) {
+        throw std::invalid_argument("empty frame");
+    }
     if (n > kMaxFrameBytes) {
         throw std::length_error("frame too large");
     }

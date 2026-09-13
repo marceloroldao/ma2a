@@ -20,7 +20,11 @@ target_link_libraries(ma2a_job_framing_test PRIVATE ma2a_core)
 add_executable(ma2a_python_interop_test tests/python_interop_test.cpp)
 target_link_libraries(ma2a_python_interop_test PRIVATE ma2a_core)
 
+add_executable(ma2a_wire_contract_test tests/wire_contract_test.cpp)
+target_link_libraries(ma2a_wire_contract_test PRIVATE ma2a_core)
+
 enable_testing()
 add_test(NAME ma2a_core_contract_test COMMAND ma2a_core_contract_test)
 add_test(NAME ma2a_job_framing_test COMMAND ma2a_job_framing_test)
 add_test(NAME ma2a_python_interop_test COMMAND ma2a_python_interop_test)
+add_test(NAME ma2a_wire_contract_test COMMAND ma2a_wire_contract_test)
