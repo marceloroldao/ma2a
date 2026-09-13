@@ -1,4 +1,5 @@
 from dataclasses import replace
+import base64
 import random
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -69,15 +70,24 @@ def mutate_ascii(text: str, rng: random.Random) -> str:
     return text[:pos] + replacement + text[pos + 1 :]
 
 
+def mutate_signature_bytes(text: str, rng: random.Random) -> str:
+    raw = bytearray(base64.urlsafe_b64decode(text.encode("ascii")))
+    if not raw:
+        raise AssertionError("test signature unexpectedly empty")
+    pos = rng.randrange(len(raw))
+    raw[pos] ^= 1 << rng.randrange(8)
+    return base64.urlsafe_b64encode(bytes(raw)).decode("ascii")
+
+
 def test_seeded_certificate_signature_mutations_fail_closed():
     rng = random.Random(20260821)
     for _ in range(100):
         root, org_cert, device_cert, challenge, signature = make_valid()
         if rng.choice([True, False]):
-            mutated = replace(org_cert, issuer_signature=mutate_ascii(org_cert.issuer_signature, rng))
+            mutated = replace(org_cert, issuer_signature=mutate_signature_bytes(org_cert.issuer_signature, rng))
             ok, _ = verify(root, mutated, device_cert, challenge, signature)
         else:
-            mutated = replace(device_cert, issuer_signature=mutate_ascii(device_cert.issuer_signature, rng))
+            mutated = replace(device_cert, issuer_signature=mutate_signature_bytes(device_cert.issuer_signature, rng))
             ok, _ = verify(root, org_cert, mutated, challenge, signature)
         assert not ok
 
