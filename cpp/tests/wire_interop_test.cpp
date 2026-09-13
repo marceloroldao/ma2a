@@ -26,8 +26,8 @@ int main() {
         "\"message_id\":\"msg-interop-1\",\"operation\":\"ECHO\","
         "\"organization_id\":\"org-1\",\"payload\":\"hello\","
         "\"protocol_version\":\"0.2\",\"request_id\":\"job-interop-1\","
-        "\"sender_node_id\":\"node-python\",\"signature_algorithm\":\"Ed25519\","
-        "\"target_node_id\":\"node-cpp\",\"signature\":\"abc123==\"},"
+        "\"sender_node_id\":\"node-python\",\"signature\":\"abc123==\","
+        "\"signature_algorithm\":\"Ed25519\",\"target_node_id\":\"node-cpp\"},"
         "\"type\":\"JOB_REQUEST\"}";
 
     const auto wire = ma2a::job_request_envelope_json(job);
