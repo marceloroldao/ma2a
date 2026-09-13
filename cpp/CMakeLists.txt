@@ -11,5 +11,9 @@ target_include_directories(ma2a_core INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/inclu
 add_executable(ma2a_core_contract_test tests/contract_test.cpp)
 target_link_libraries(ma2a_core_contract_test PRIVATE ma2a_core)
 
+add_executable(ma2a_job_framing_test tests/job_framing_test.cpp)
+target_link_libraries(ma2a_job_framing_test PRIVATE ma2a_core)
+
 enable_testing()
 add_test(NAME ma2a_core_contract_test COMMAND ma2a_core_contract_test)
+add_test(NAME ma2a_job_framing_test COMMAND ma2a_job_framing_test)
