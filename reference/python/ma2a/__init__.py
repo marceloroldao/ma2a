@@ -19,6 +19,16 @@ from .capability import (
     verify_failure_notice,
 )
 from .conflict import DeltaMeta, Resolution, resolve
+from .job import (
+    JobRequest,
+    JobResult,
+    execute_reference_job,
+    sign_job_request,
+    sign_job_result,
+    verify_job_request,
+    verify_job_result,
+)
+from .transport import open_listener, recv_frame, send_frame, send_job, serve_one_job
 
 __all__ = [
     "Certificate",
@@ -38,4 +48,16 @@ __all__ = [
     "DeltaMeta",
     "Resolution",
     "resolve",
+    "JobRequest",
+    "JobResult",
+    "execute_reference_job",
+    "sign_job_request",
+    "sign_job_result",
+    "verify_job_request",
+    "verify_job_result",
+    "open_listener",
+    "recv_frame",
+    "send_frame",
+    "send_job",
+    "serve_one_job",
 ]
