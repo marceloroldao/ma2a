@@ -30,11 +30,15 @@ target_link_libraries(ma2a_tcp_crosslang_client PRIVATE ma2a_core)
 add_executable(ma2a_tcp_crosslang_signed_client tests/tcp_crosslang_signed_client.cpp)
 target_link_libraries(ma2a_tcp_crosslang_signed_client PRIVATE ma2a_core)
 
+add_executable(ma2a_failure_notice_test tests/failure_notice_test.cpp)
+target_link_libraries(ma2a_failure_notice_test PRIVATE ma2a_core)
+
 enable_testing()
 add_test(NAME ma2a_core_contract_test COMMAND ma2a_core_contract_test)
 add_test(NAME ma2a_job_framing_test COMMAND ma2a_job_framing_test)
 add_test(NAME ma2a_python_interop_test COMMAND ma2a_python_interop_test)
 add_test(NAME ma2a_wire_contract_test COMMAND ma2a_wire_contract_test)
+add_test(NAME ma2a_failure_notice_test COMMAND ma2a_failure_notice_test)
 add_test(
     NAME ma2a_tcp_crosslang_roundtrip
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/tcp_crosslang_roundtrip.py $<TARGET_FILE:ma2a_tcp_crosslang_client>
