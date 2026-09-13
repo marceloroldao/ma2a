@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 #include <ma2a/canonical.hpp>
@@ -16,7 +17,6 @@ inline std::string signed_job_request_json(const JobRequest& job) {
 inline std::string signed_job_result_json(const JobResult& result) {
     // `signature` sorts between `signature_algorithm` and `status` in Python.
     const auto unsigned_json = canonical_job_result_json(result);
-    const auto marker = std::string{"\"signature_algorithm\":"};
     const auto status_marker = std::string{",\"status\":"};
     const auto status_pos = unsigned_json.find(status_marker);
     if (status_pos == std::string::npos) {
