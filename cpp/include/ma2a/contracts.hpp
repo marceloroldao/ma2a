@@ -27,27 +27,36 @@ struct CapabilityAdvertisement {
     std::vector<std::string> models;
     std::vector<std::string> memory_domains;
     std::vector<Scope> supported_scopes;
+    std::string signature_algorithm{"Ed25519"};
+    std::string signature;
 };
 
 struct JobRequest {
     std::string protocol_version;
+    std::string message_id;
     std::string request_id;
     std::string sender_node_id;
     std::string target_node_id;
+    std::string organization_id;
     std::string operation;
     std::string payload;
     std::int64_t issued_at{};
     std::int64_t expires_at{};
+    std::string signature_algorithm{"Ed25519"};
+    std::string signature;
 };
 
 struct JobResult {
     std::string protocol_version;
+    std::string message_id;
     std::string request_id;
-    std::string executing_node_id;
-    bool success{};
+    std::string responder_node_id;
+    std::string recipient_node_id;
+    std::string status;
     std::string payload;
-    std::string error;
     std::int64_t completed_at{};
+    std::string signature_algorithm{"Ed25519"};
+    std::string signature;
 };
 
 struct FailureNotice {
@@ -58,6 +67,8 @@ struct FailureNotice {
     std::string failed_node_id;
     std::string reason;
     std::int64_t observed_at{};
+    std::string signature_algorithm{"Ed25519"};
+    std::string signature;
 };
 
 } // namespace ma2a
