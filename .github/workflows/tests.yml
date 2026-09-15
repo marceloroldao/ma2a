@@ -34,8 +34,13 @@ jobs:
           cache: pip
       - name: Install cross-language test dependency
         run: python -m pip install cryptography
+      - name: Checkout resolutive-routing integration dependency
+        uses: actions/checkout@v4
+        with:
+          repository: marceloroldao/resolutive-routing
+          path: resolutive-routing
       - name: Configure
-        run: cmake -S cpp -B cpp/build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S cpp -B cpp/build -DCMAKE_BUILD_TYPE=Release -DRESOLUTIVE_ROUTING_SOURCE_DIR="$GITHUB_WORKSPACE/resolutive-routing"
       - name: Build
         run: cmake --build cpp/build --config Release --parallel
       - name: Test
