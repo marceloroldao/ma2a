@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
     request.source_node_id = "node-a";
     request.organization_id = "org-1";
 
-    // B is deliberately the preferred initial target; C is the valid fallback.
     std::vector<NodeSnapshot> nodes{
         node("node-b", 5.0, 1.0),
         node("node-c", 20.0, 0.90),
@@ -49,12 +48,12 @@ int main(int argc, char** argv) {
         return 3;
     }
 
-    FailureNoticeView notice;
+    AuthenticatedFailureNoticeView notice;
     notice.request_id = argv[1];
     notice.failed_node_id = argv[2];
     notice.reason = argv[3];
     notice.observed_at = std::stoll(argv[4]);
-    notice.authenticated = true; // MA2A signature verification happens before this boundary.
+    notice.authenticated = true;
 
     const auto failure = failure_event_from_authenticated_notice(notice);
     const auto rerouted = reroute_after_failure(router, request, nodes, initial, failure);
