@@ -47,3 +47,7 @@ add_test(
     NAME ma2a_tcp_crosslang_signed_roundtrip
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/tcp_crosslang_signed_roundtrip.py $<TARGET_FILE:ma2a_tcp_crosslang_signed_client>
 )
+add_test(
+    NAME ma2a_distributed_failover_three_nodes
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/distributed_failover_three_nodes.py
+)
