@@ -69,7 +69,7 @@ public:
             }
         }
 
-        return {lifecycle.state(), !lifecycle.state().completed};
+        return {lifecycle.state(), lifecycle.exhausted()};
     }
 
 private:
