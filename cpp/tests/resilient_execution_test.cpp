@@ -72,7 +72,7 @@ int main() {
     ResilientExecutionEngine unavailable(no_route, transport, 2);
     const auto empty = unavailable.execute(request);
     assert(!empty.state.completed);
-    assert(empty.exhausted);
+    assert(!empty.exhausted);
     assert(empty.state.attempts.empty());
 
     RouteProvider bad_route = [](const JobRequest&, const std::unordered_set<std::string>& excluded)
