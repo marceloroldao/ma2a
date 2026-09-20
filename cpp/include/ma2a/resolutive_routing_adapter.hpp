@@ -20,9 +20,7 @@ public:
         const std::unordered_set<std::string>& excluded) const {
         resolutive_routing::Request request;
         request.request_id = job.request_id;
-        request.type = job.operation == "PING"
-            ? resolutive_routing::RequestType::Ping
-            : resolutive_routing::RequestType::Echo;
+        request.type = resolutive_routing::RequestType::Echo;
         request.scope = resolutive_routing::Scope::Private;
         request.source_node_id = job.sender_node_id;
         request.organization_id = job.organization_id;
