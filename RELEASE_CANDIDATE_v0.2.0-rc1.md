@@ -55,19 +55,31 @@ Pinned `resolutive-routing` snapshot:
 - [x] Python 3.11 and Python 3.12 passed in Actions run `35547692001`.
 - [x] 30,000-request deterministic stress gate passed with zero divergences.
 - [x] Benchmark metrics published as a GitHub Actions artifact.
-- [ ] Final release-preparation CI passes against the exact pinned routing snapshot.
+- [x] Final release-preparation CI passes against the exact pinned routing snapshot.
+
+## Final CI evidence
+
+GitHub Actions run `35548055331` passed:
+
+- Python 3.11: success
+- Python 3.12: success
+- C++ Release core with assertions active: success
+- exact routing checkout: `17bf787d92589ad398bf9f65c1eecbbbbde8f6b1`
+- 17/17 C++ tests: success
+- benchmark artifact upload: success
+- 30,000-request stress divergences: 0
 
 ## Stress evidence
 
-GitHub Actions run `35547692001` measured the following on its hosted runner:
+Final release-preparation GitHub Actions run `35548055331` (run #82), using pinned routing commit `17bf787d92589ad398bf9f65c1eecbbbbde8f6b1`, measured:
 
 | Failovers | Iterations | Divergences | Avg execution | Requests/s |
 | ---: | ---: | ---: | ---: | ---: |
-| 0 | 10,000 | 0 | 2.93 µs | 341,834.58 |
-| 1 | 10,000 | 0 | 5.20 µs | 192,440.16 |
-| 2 | 10,000 | 0 | 6.93 µs | 144,263.03 |
+| 0 | 10,000 | 0 | 2.37 µs | 421,579.60 |
+| 1 | 10,000 | 0 | 4.16 µs | 240,441.49 |
+| 2 | 10,000 | 0 | 5.61 µs | 178,322.53 |
 
-Observed maximum RSS during that benchmark process: 3188 KiB.
+Observed maximum RSS during that benchmark process: 3428 KiB.
 
 These values are diagnostic and runner-specific. The release claim is **zero observed divergences in the defined deterministic gate**, not a universal throughput guarantee.
 
