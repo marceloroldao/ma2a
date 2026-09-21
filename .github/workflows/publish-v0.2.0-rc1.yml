@@ -1,0 +1,58 @@
+name: publish-v0.2.0-rc1
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/publish-v0.2.0-rc1.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TAG: v0.2.0-rc1
+      TARGET_SHA: 22846a55bc9dffdec8e8cf18aa51e3ea6756fac0
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen target
+        run: |
+          test "$(git rev-parse "$TARGET_SHA")" = "$TARGET_SHA"
+          test "$(git show "$TARGET_SHA:pyproject.toml" | grep -F 'version = "0.2.0rc1"')" = 'version = "0.2.0rc1"'
+          grep -F '17bf787d92589ad398bf9f65c1eecbbbbde8f6b1' .github/workflows/tests.yml
+
+      - name: Create immutable release tag
+        run: |
+          git fetch --tags --force
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            git fetch origin "refs/tags/$TAG:refs/tags/$TAG" --force
+            ACTUAL_SHA="$(git rev-list -n 1 "$TAG")"
+            if [ "$ACTUAL_SHA" != "$TARGET_SHA" ]; then
+              echo "Existing tag $TAG points to $ACTUAL_SHA, expected $TARGET_SHA" >&2
+              exit 1
+            fi
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "$TAG" "$TARGET_SHA" -m "MA2A $TAG"
+            git push origin "refs/tags/$TAG"
+          fi
+
+      - name: Create GitHub prerelease
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "GitHub Release $TAG already exists; leaving it unchanged."
+          else
+            gh release create "$TAG"               --repo "$GITHUB_REPOSITORY"               --verify-tag               --title "MA2A v0.2.0-rc1"               --notes-file RELEASE_NOTES_v0.2.0-rc1.md               --prerelease
+          fi
+
+      - name: Verify published release
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY"             --json tagName,isPrerelease,isDraft,url,targetCommitish
