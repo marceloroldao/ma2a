@@ -38,6 +38,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: marceloroldao/resolutive-routing
+          ref: 17bf787d92589ad398bf9f65c1eecbbbbde8f6b1
           path: resolutive-routing
       - name: Configure
         run: cmake -S cpp -B cpp/build -DCMAKE_BUILD_TYPE=Release -DRESOLUTIVE_ROUTING_SOURCE_DIR="$GITHUB_WORKSPACE/resolutive-routing"
