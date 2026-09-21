@@ -44,7 +44,7 @@ private:
 inline void send_all(int fd, const std::vector<std::uint8_t>& data) {
     std::size_t sent = 0;
     while (sent < data.size()) {
-        const auto n = ::send(fd, data.data() + sent, data.size() - sent, 0);
+        const auto n = ::send(fd, data.data() + sent, data.size() - sent, MSG_NOSIGNAL);
         if (n > 0) {
             sent += static_cast<std::size_t>(n);
             continue;
