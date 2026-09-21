@@ -10,6 +10,8 @@ add_library(ma2a_core INTERFACE)
 target_include_directories(ma2a_core INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(ma2a_core INTERFACE OpenSSL::Crypto)
 set(RESOLUTIVE_ROUTING_SOURCE_DIR "" CACHE PATH "Path to resolutive-routing checkout")
+add_executable(ma2a_assertions_enabled_test tests/assertions_enabled_test.cpp)
+target_link_libraries(ma2a_assertions_enabled_test PRIVATE ma2a_core)
 add_executable(ma2a_core_contract_test tests/contract_test.cpp)
 target_link_libraries(ma2a_core_contract_test PRIVATE ma2a_core)
 add_executable(ma2a_job_framing_test tests/job_framing_test.cpp)
@@ -39,8 +41,39 @@ if(RESOLUTIVE_ROUTING_SOURCE_DIR)
  add_executable(ma2a_authenticated_tcp_resilient_execution_test tests/authenticated_tcp_resilient_execution_test.cpp)
  target_link_libraries(ma2a_authenticated_tcp_resilient_execution_test PRIVATE ma2a_core Threads::Threads)
  target_include_directories(ma2a_authenticated_tcp_resilient_execution_test PRIVATE ${RESOLUTIVE_ROUTING_SOURCE_DIR}/cpp/include)
+ add_executable(ma2a_resilient_execution_stress_test tests/resilient_execution_stress_test.cpp)
+ target_link_libraries(ma2a_resilient_execution_stress_test PRIVATE ma2a_core)
+ target_include_directories(ma2a_resilient_execution_stress_test PRIVATE ${RESOLUTIVE_ROUTING_SOURCE_DIR}/cpp/include)
 endif()
+
+set(MA2A_ASSERT_TEST_TARGETS
+ ma2a_assertions_enabled_test
+ ma2a_core_contract_test
+ ma2a_job_framing_test
+ ma2a_python_interop_test
+ ma2a_wire_contract_test
+ ma2a_failure_notice_test
+ ma2a_execution_orchestrator_test
+ ma2a_resilient_execution_test
+ ma2a_authenticated_tcp_adversarial_test
+ ma2a_tcp_crosslang_client
+ ma2a_tcp_crosslang_signed_client
+ ma2a_real_routing_execution_test
+ ma2a_authenticated_tcp_resilient_execution_test
+ ma2a_resilient_execution_stress_test
+)
+foreach(target IN LISTS MA2A_ASSERT_TEST_TARGETS)
+ if(TARGET ${target})
+  if(MSVC)
+   target_compile_options(${target} PRIVATE /UNDEBUG)
+  else()
+   target_compile_options(${target} PRIVATE -UNDEBUG)
+  endif()
+ endif()
+endforeach()
+
 enable_testing()
+add_test(NAME ma2a_assertions_enabled_test COMMAND ma2a_assertions_enabled_test)
 add_test(NAME ma2a_core_contract_test COMMAND ma2a_core_contract_test)
 add_test(NAME ma2a_job_framing_test COMMAND ma2a_job_framing_test)
 add_test(NAME ma2a_python_interop_test COMMAND ma2a_python_interop_test)
@@ -57,4 +90,5 @@ if(RESOLUTIVE_ROUTING_SOURCE_DIR)
  add_test(NAME ma2a_multi_failover_routing_chain COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/distributed_multi_failover_with_routing.py $<TARGET_FILE:ma2a_routing_failover_driver>)
  add_test(NAME ma2a_real_routing_execution_test COMMAND ma2a_real_routing_execution_test)
  add_test(NAME ma2a_authenticated_tcp_resilient_execution_test COMMAND ma2a_authenticated_tcp_resilient_execution_test)
+ add_test(NAME ma2a_resilient_execution_stress_test COMMAND ma2a_resilient_execution_stress_test)
 endif()
