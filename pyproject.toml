@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ma2a-reference"
-version = "0.1.0.dev0"
+version = "0.2.0rc1"
 description = "Experimental MA2A reference implementation"
 requires-python = ">=3.11"
 dependencies = ["cryptography>=42"]
