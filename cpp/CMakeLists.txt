@@ -41,6 +41,9 @@ if(RESOLUTIVE_ROUTING_SOURCE_DIR)
  add_executable(ma2a_authenticated_tcp_resilient_execution_test tests/authenticated_tcp_resilient_execution_test.cpp)
  target_link_libraries(ma2a_authenticated_tcp_resilient_execution_test PRIVATE ma2a_core Threads::Threads)
  target_include_directories(ma2a_authenticated_tcp_resilient_execution_test PRIVATE ${RESOLUTIVE_ROUTING_SOURCE_DIR}/cpp/include)
+ add_executable(ma2a_resilient_execution_stress_test tests/resilient_execution_stress_test.cpp)
+ target_link_libraries(ma2a_resilient_execution_stress_test PRIVATE ma2a_core)
+ target_include_directories(ma2a_resilient_execution_stress_test PRIVATE ${RESOLUTIVE_ROUTING_SOURCE_DIR}/cpp/include)
 endif()
 
 set(MA2A_ASSERT_TEST_TARGETS
@@ -57,6 +60,7 @@ set(MA2A_ASSERT_TEST_TARGETS
  ma2a_tcp_crosslang_signed_client
  ma2a_real_routing_execution_test
  ma2a_authenticated_tcp_resilient_execution_test
+ ma2a_resilient_execution_stress_test
 )
 foreach(target IN LISTS MA2A_ASSERT_TEST_TARGETS)
  if(TARGET ${target})
@@ -86,4 +90,5 @@ if(RESOLUTIVE_ROUTING_SOURCE_DIR)
  add_test(NAME ma2a_multi_failover_routing_chain COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/distributed_multi_failover_with_routing.py $<TARGET_FILE:ma2a_routing_failover_driver>)
  add_test(NAME ma2a_real_routing_execution_test COMMAND ma2a_real_routing_execution_test)
  add_test(NAME ma2a_authenticated_tcp_resilient_execution_test COMMAND ma2a_authenticated_tcp_resilient_execution_test)
+ add_test(NAME ma2a_resilient_execution_stress_test COMMAND ma2a_resilient_execution_stress_test)
 endif()
