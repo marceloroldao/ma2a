@@ -97,7 +97,13 @@ These values are diagnostic and runner-specific. The release claim is **zero obs
 - [x] Zenodo archival DOI minted for the exact tagged snapshot: `10.5281/zenodo.22866124`.
 - [x] Resolutive prior-art registry cross-reference updated to the exact v0.2 tag/commit.
 
-## Archival record\n\n- GitHub tag: `v0.2.0-rc1`\n- Frozen commit: `22846a55bc9dffdec8e8cf18aa51e3ea6756fac0`\n- Zenodo DOI: `10.5281/zenodo.22866124`\n\n## Known non-production limitations
+## Archival record
+
+- GitHub tag: `v0.2.0-rc1`
+- Frozen commit: `22846a55bc9dffdec8e8cf18aa51e3ea6756fac0`
+- Zenodo DOI: `10.5281/zenodo.22866124`
+
+## Known non-production limitations
 
 - TCP transport is not encrypted/channel-bound in the reference executor.
 - The injected C++ public-key resolver is not itself bound to the organizational certificate chain.
