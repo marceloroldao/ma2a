@@ -1,0 +1,29 @@
+{
+  "creators": [
+    {
+      "name": "Matos, Marcelo Roldão",
+      "orcid": "0009-0003-6075-4680"
+    }
+  ],
+  "title": "MA2A: Memoria.ia Agent-to-Agent Protocol — v0.2.0-rc1",
+  "version": "0.2.0-rc1",
+  "upload_type": "software",
+  "access_right": "open",
+  "language": "eng",
+  "description": "Experimental MA2A release candidate adding a C++20 authenticated resilient-execution path, signed job/failure evidence, bounded TCP transport, deterministic rerouting through resolutive-routing, adversarial gates and reproducible stress validation.",
+  "keywords": [
+    "MA2A",
+    "agent-to-agent",
+    "resilient execution",
+    "deterministic routing",
+    "Ed25519",
+    "edge AI",
+    "multi-agent systems"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.22048589",
+      "relation": "isNewVersionOf"
+    }
+  ]
+}

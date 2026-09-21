@@ -1,80 +1,64 @@
 # MA2A — Memoria.ia Agent-to-Agent Protocol
 
-[![DOI](https://zenodo.org/badge/1341955634.svg)](https://doi.org/10.5281/zenodo.22048589)
+MA2A is an experimental protocol and reference implementation for deterministic state synchronization and authenticated resilient execution between agents, devices and organizational nodes.
 
-MA2A is an experimental protocol for deterministic synchronization of resolutive memory state between agents, devices, organizational memories, and coordination services.
+## Current release candidate
 
-## Archival release
+**Candidate:** `v0.2.0-rc1`
+
+The v0.2 line adds a native C++20 execution path around the existing protocol/security baseline:
+
+- Python ↔ C++ wire interoperability;
+- Ed25519-signed `JobRequest`, `JobResult` and `FailureNotice`;
+- framed TCP transport with a 1 MiB protocol frame limit;
+- `ResilientExecutionEngine` with cumulative failed-node exclusion;
+- direct integration with the deterministic `resolutive-routing` C++ boundary;
+- reassignment B → C → D after transport/authenticated failures;
+- per-attempt request re-signing after `target_node_id` is selected;
+- bounded connect/read/write deadlines and SIGPIPE-safe sends;
+- rejection of forged results and forged/incoherent failure evidence;
+- adversarial transport/authentication gate;
+- 30,000-request deterministic stress gate with zero observed divergences.
+
+The release candidate pins `resolutive-routing` to the exact snapshot:
+
+`17bf787d92589ad398bf9f65c1eecbbbbde8f6b1`
+
+Routing remains owned by `resolutive-routing`; MA2A owns the execution lifecycle, authenticated wire evidence and transport boundary.
+
+## Archived v0.1 baseline
 
 - **Release:** `v0.1.0-rc1`
 - **Zenodo DOI:** `10.5281/zenodo.22048589`
 - **Status:** experimental release candidate
 
-The DOI identifies the archived release snapshot. Later commits on `main` are not retroactively part of that archived snapshot.
+That DOI identifies only the archived v0.1 snapshot. It must not be presented as the DOI for v0.2.
 
-## Core design
+## Architecture
 
-MA2A separates cognition from synchronization:
+MA2A separates cognition from synchronization/execution:
 
-- **L1 — Edge/Client:** local memory, sensors, applications, optional local LLM, private state.
-- **L2 — Mesh/Transport:** authenticated peer or network transport.
-- **L3 — Coordination:** routing, validation, synchronization, persistence, directory/relay functions; no LLM is required in the protocol control plane.
+- **L1 — Edge/Client:** local memory, sensors, applications, optional local LLM and private state.
+- **L2 — Transport/Mesh:** authenticated exchange between peers.
+- **L3 — Coordination:** routing integration, validation, synchronization, persistence and relay functions.
 
-The protocol is designed to exchange compact trajectory/state deltas rather than requiring natural-language LLM-to-LLM messages for deterministic synchronization.
+LLMs are optional application components and are not required in the deterministic protocol control path.
 
-## Repository role
-
-This repository is intended to become the canonical home of:
-
-- MA2A protocol specifications;
-- wire formats and state-delta definitions;
-- deterministic conflict-resolution rules;
-- organizational PKI and handshake;
-- privacy-scope rules;
-- reference client/server implementations;
-- conformance, convergence, interoperability, replay, and security tests;
-- reproducible benchmarks.
-
-The defensive technical-disclosure registry for the wider Resolutive family is maintained separately in `marceloroldao/resolutive-prior-art`.
-
-## Scientific/engineering status
-
-**EXPERIMENTAL.** The current specification and implementations must not be interpreted as production security certification, universal O(1) end-to-end synchronization, or proof of superiority over other agent communication protocols.
-
-`O(1)` claims, when used, refer only to explicitly measured known-address resolver operations. Network serialization, cryptography, persistence, routing, and conflict resolution have their own cost models.
-
-“Zero LLM token transport” means MA2A does not require transporting natural-language LLM tokens for deterministic state synchronization. It does not mean zero network bytes.
-
-## Planned v0.1 structure
+### Responsibility boundary
 
 ```text
-spec/
-  MA2A-RFC.md
-  wire-format.md
-  trajectory-delta.md
-  conflict-resolution.md
-  privacy-scopes.md
-  error-codes.md
-security/
-  PKI.md
-  certificates.md
-  handshake.md
-  revocation.md
-reference/
-  client/
-  server/
-  crypto/
-tests/
-  conformance/
-  interoperability/
-  convergence/
-  replay/
-  security/
-examples/
-benchmarks/
+Memoria.ia
+  -> memory/state semantics
+
+resolutive-routing
+  -> admissibility, scoring, deterministic route selection and rerouting
+
+MA2A
+  -> identity boundary, signed wire messages, transport,
+     execution lifecycle, failure evidence and result delivery
 ```
 
-## Initial trust model
+## Trust model
 
 ```text
 MA2A Official Root
@@ -86,8 +70,51 @@ MA2A Official Root
  device   robot    agent
 ```
 
-An organization is the principal licensed/trusted network identity. Devices and agents may receive subordinate credentials under organizational policy.
+The initial signature primitive is Ed25519.
+
+## Protocol limits
+
+See `PROTOCOL_LIMITS.md`.
+
+The v0.2 execution wire is frozen in `spec/resilient-execution-v0.2.md`.
+
+## Validation
+
+The v0.2 candidate currently includes:
+
+- Python test matrix on 3.11 and 3.12;
+- C++ Release-mode tests with assertions explicitly kept active;
+- Python/C++ signed TCP roundtrip;
+- real `resolutive-routing` failover integration;
+- authenticated TCP resilient execution;
+- adversarial malformed/forged input tests;
+- deterministic stress testing across 0, 1 and 2 failovers.
+
+Benchmark values are diagnostic and environment-specific; they are not universal performance claims.
+
+## Security status
+
+**EXPERIMENTAL / RELEASE CANDIDATE.**
+
+This is not a production-security certification. In particular, the current C++ resilient executor does not itself provide:
+
+- encrypted transport/channel confidentiality;
+- automatic certificate-chain binding inside the injected public-key resolver;
+- a production C++ execution listener with persistent replay protection;
+- distributed revocation/status propagation;
+- HSM/KMS-backed production key custody;
+- an independent external security audit.
+
+See `security/SECURITY_REVIEW_v0.2.md`.
+
+## Scientific/engineering claims
+
+“Zero LLM token transport” means natural-language LLM token streams are not required for deterministic MA2A synchronization/execution control. It does not mean zero network bytes.
+
+Any O(1) claim must name the exact local operation measured. End-to-end routing, networking, cryptography and persistence have their own cost models.
 
 ## Version
 
-Current public archival baseline: `v0.1.0-rc1`.
+Current prepared candidate: `v0.2.0-rc1`.
+
+Latest archived DOI-bearing baseline: `v0.1.0-rc1`.

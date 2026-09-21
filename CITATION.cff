@@ -1,25 +1,25 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite the archived MA2A release."
-title: "MA2A: Memoria.ia Agent-to-Agent Protocol"
+message: "If you use this MA2A release candidate, cite the tagged software snapshot; add the v0.2 DOI only after archival."
+title: "MA2A: Memoria.ia Agent-to-Agent Protocol — v0.2.0-rc1"
 type: software
-version: "0.1.0-rc1"
-date-released: 2026-08-21
-doi: "10.5281/zenodo.22048589"
+version: "0.2.0-rc1"
+date-released: 2026-09-20
 authors:
   - family-names: "Matos"
     given-names: "Marcelo Roldão"
 abstract: >-
-  MA2A (Memoria.ia Agent-to-Agent) is an experimental protocol and reference
-  implementation for deterministic trajectory and state synchronization among
-  autonomous agents, edge devices, robots, IoT systems, and organizational
-  Memoria.ia nodes. The architecture separates edge-side cognition from
-  synchronization and includes deterministic conflict handling and an Ed25519
-  organizational PKI and challenge-response handshake.
+  MA2A is an experimental protocol and reference implementation for deterministic
+  state synchronization and authenticated resilient execution among autonomous
+  agents, edge devices and organizational nodes. The v0.2 release-candidate line
+  adds a C++20 execution path, Ed25519-signed job/failure evidence, bounded TCP
+  transport, deterministic failover through resolutive-routing, adversarial
+  validation and reproducible stress gates.
 repository-code: "https://github.com/marceloroldao/ma2a"
 keywords:
   - "agent-to-agent"
+  - "resilient execution"
+  - "deterministic routing"
   - "resolutive memory"
-  - "deterministic synchronization"
   - "edge AI"
-  - "PKI"
+  - "Ed25519"
   - "multi-agent systems"
