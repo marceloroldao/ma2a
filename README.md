@@ -4,7 +4,9 @@ MA2A is an experimental protocol and reference implementation for deterministic 
 
 ## Current release candidate
 
-**Candidate:** `v0.2.0-rc1`\n\n**Zenodo DOI:** `10.5281/zenodo.22866124`
+**Candidate:** `v0.2.0-rc1`
+
+**Zenodo DOI:** `10.5281/zenodo.22866124`
 
 The v0.2 line adds a native C++20 execution path around the existing protocol/security baseline:
 
