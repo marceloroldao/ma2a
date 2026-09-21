@@ -6,6 +6,8 @@ MA2A is an experimental protocol and reference implementation for deterministic 
 
 **Candidate:** `v0.2.0-rc1`
 
+**Zenodo DOI:** `10.5281/zenodo.22866124`
+
 The v0.2 line adds a native C++20 execution path around the existing protocol/security baseline:
 
 - Python ↔ C++ wire interoperability;
@@ -115,6 +117,6 @@ Any O(1) claim must name the exact local operation measured. End-to-end routing,
 
 ## Version
 
-Current prepared candidate: `v0.2.0-rc1`.
+Current published candidate: `v0.2.0-rc1`.
 
-Latest archived DOI-bearing baseline: `v0.1.0-rc1`.
+Zenodo DOI: `10.5281/zenodo.22866124`.

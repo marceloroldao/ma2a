@@ -42,4 +42,4 @@ See:
 
 The historical v0.1 DOI `10.5281/zenodo.22048589` applies only to the archived v0.1 snapshot and is **not** the DOI of this v0.2 release candidate.
 
-A new Zenodo DOI must be recorded only after Zenodo archives this exact tagged snapshot.
+The v0.2.0-rc1 tagged snapshot is archived at Zenodo DOI `10.5281/zenodo.22866124`.
