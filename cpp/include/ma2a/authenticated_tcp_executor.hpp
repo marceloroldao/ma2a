@@ -4,7 +4,9 @@
 #include <cstdint>
 #include <functional>
 #include <optional>
+#include <stdexcept>
 #include <string>
+#include <utility>
 
 #include <ma2a/failure_notice.hpp>
 #include <ma2a/job_auth.hpp>
@@ -28,13 +30,19 @@ public:
     AuthenticatedTcpAttemptExecutor(
         EVP_PKEY* local_private_key,
         EndpointResolver endpoint_resolver,
-        PublicKeyResolver public_key_resolver)
+        PublicKeyResolver public_key_resolver,
+        std::chrono::milliseconds connect_timeout = std::chrono::milliseconds{1500},
+        std::chrono::milliseconds io_timeout = std::chrono::milliseconds{3000})
         : local_private_key_(local_private_key),
           endpoint_resolver_(std::move(endpoint_resolver)),
-          public_key_resolver_(std::move(public_key_resolver)) {
+          public_key_resolver_(std::move(public_key_resolver)),
+          connect_timeout_(connect_timeout),
+          io_timeout_(io_timeout) {
         if (!local_private_key_) throw std::invalid_argument("local private key is required");
         if (!endpoint_resolver_) throw std::invalid_argument("endpoint resolver is required");
         if (!public_key_resolver_) throw std::invalid_argument("public key resolver is required");
+        if (connect_timeout_.count() <= 0) throw std::invalid_argument("connect timeout must be positive");
+        if (io_timeout_.count() <= 0) throw std::invalid_argument("IO timeout must be positive");
     }
 
     AttemptResponse operator()(const JobRequest& request, const std::string& target) const {
@@ -49,7 +57,8 @@ public:
         sign_job_request(signed_request, local_private_key_);
 
         try {
-            auto socket = connect_ipv4(endpoint->host, endpoint->port);
+            auto socket = connect_ipv4_with_timeout(endpoint->host, endpoint->port, connect_timeout_);
+            set_socket_io_timeout(socket.get(), io_timeout_);
             send_framed_json(socket.get(), job_request_envelope_json(signed_request));
             const auto response_json = recv_framed_json(socket.get());
             const auto type = wire_envelope_type(response_json);
@@ -114,6 +123,8 @@ private:
     EVP_PKEY* local_private_key_;
     EndpointResolver endpoint_resolver_;
     PublicKeyResolver public_key_resolver_;
+    std::chrono::milliseconds connect_timeout_;
+    std::chrono::milliseconds io_timeout_;
 };
 
 } // namespace ma2a

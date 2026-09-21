@@ -146,8 +146,9 @@ int main() {
 
     auto server_b = start_server([expected_b](int client) {
         assert(ma2a::recv_framed_json(client) == expected_b);
-        // Close without a response: the executor must create a locally signed
-        // transport failure and the engine must continue to the next route.
+        // Keep the TCP connection open but silent well beyond the executor's
+        // receive deadline. Failover must not wait for this peer to cooperate.
+        std::this_thread::sleep_for(std::chrono::milliseconds{1000});
     });
 
     auto server_c = start_server([expected_c, &attacker_private](int client) {
@@ -211,7 +212,9 @@ int main() {
     ma2a::AuthenticatedTcpAttemptExecutor tcp_executor(
         a_private.get(),
         endpoint_resolver,
-        public_key_resolver
+        public_key_resolver,
+        std::chrono::milliseconds{200},
+        std::chrono::milliseconds{50}
     );
 
     ma2a::ResilientExecutionEngine engine(
@@ -224,7 +227,12 @@ int main() {
         4
     );
 
+    const auto started = std::chrono::steady_clock::now();
     const auto outcome = engine.execute(job);
+    const auto execution_time =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::steady_clock::now() - started
+        );
 
     server_b.join();
     server_c.join();
@@ -232,6 +240,7 @@ int main() {
 
     assert(outcome.state.completed);
     assert(!outcome.exhausted);
+    assert(execution_time < std::chrono::milliseconds{500});
     assert(outcome.state.attempts.size() == 3);
     assert(outcome.state.attempts[0].node_id == "node-b");
     assert(outcome.state.attempts[0].outcome == "FAILED");
