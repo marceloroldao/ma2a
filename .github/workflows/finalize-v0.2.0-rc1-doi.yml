@@ -1,0 +1,35 @@
+name: finalize-v0.2.0-rc1-doi
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/finalize-v0.2.0-rc1-doi.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    env:
+      TAG: v0.2.0-rc1
+      DOI: 10.5281/zenodo.22866124
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify DOI is recorded
+        run: |
+          grep -F "$DOI" "RELEASE_NOTES_v0.2.0-rc1.md"
+
+      - name: Update existing GitHub prerelease notes
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+          gh release edit "$TAG"             --repo "$GITHUB_REPOSITORY"             --notes-file "RELEASE_NOTES_v0.2.0-rc1.md"             --prerelease
+
+      - name: Verify release and DOI
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json tagName,isPrerelease,isDraft,url,body
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq '.body' | grep -F "$DOI"
