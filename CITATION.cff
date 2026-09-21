@@ -2,7 +2,8 @@ cff-version: 1.2.0
 message: "If you use this MA2A release candidate, please cite the archived v0.2.0-rc1 software release."
 title: "MA2A: Memoria.ia Agent-to-Agent Protocol — v0.2.0-rc1"
 type: software
-version: "0.2.0-rc1"\ndoi: "10.5281/zenodo.22866124"
+version: "0.2.0-rc1"
+doi: "10.5281/zenodo.22866124"
 date-released: 2026-09-20
 authors:
   - family-names: "Matos"
